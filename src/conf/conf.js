@@ -8,3 +8,6 @@ appwriteBucketId : String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
 }
 
 export default conf 
+
+// This file is used to store configuration variables for the application,
+// String is because import.meta.env variables has to be String 

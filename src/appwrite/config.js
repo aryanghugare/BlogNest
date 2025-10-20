@@ -1,5 +1,5 @@
 import conf from "../conf/conf.js";
-import { Client, Account, ID,Databases,Storage,Query, TablesDB } from "appwrite";
+import { Client, Account, ID,Databases,Storage,Query} from "appwrite";
 
 
 export class Service {
@@ -101,7 +101,6 @@ slug
 
 
 // The method to retrive the documents or the posts  , whose status is active 
-
 // The queries which i have used here can be only done , if there is indexing , without indexing is not possible 
 async getPosts(){
 try {
@@ -109,7 +108,7 @@ try {
 conf.appwriteDatabaseId,
 conf.appwriteCollectionId,
 [
-Query.equal('status','active')
+Query.equal('status','active') // 'status' is field name , 'active' is value
 ]
 )
 } catch (error) {
@@ -135,6 +134,7 @@ file
 }
 }
 // file delete service 
+// This fileId we get from the createPost method's return value , which is stored as featuredImage
 async deleteFile(fileId){
 try {
 await this.bucket.deleteFile(
