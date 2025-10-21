@@ -3,17 +3,19 @@ import appwriteService from '../appwrite/config'
 import { Container, PostCard } from '../components'
 function AllPosts() {
 const [posts,setPosts]=useState([])
-useEffect(()=> {})
+useEffect(()=> {
 appwriteService.getPosts([]).then((posts)=>{
  if(posts){
 setPosts(posts.documents)
 }
 
 })
+},[])
+
   return (
    <div className='w-full py-8 '>
 <Container>
-<h1 className='text-3xl font-bold mb-8'>All Post </h1>
+<h1 className='text-3xl font-bold mb-8'>All Posts </h1>
 <div className='flex flex-wrap '>
 {
 posts.map((post) => (

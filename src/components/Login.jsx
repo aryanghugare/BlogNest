@@ -13,13 +13,13 @@ const {register,handleSubmit} = useForm()
 const[error , setError] = useState('')
 
 const login = async (data) =>{
-setError('')
+setError('') // But for every login form and register form we have to do this manually
 try {
   const session = await authService.login(data)
 if(session){
 const userData = await authService.getCurrentUser()
 if(userData) dispatch(authLogin(userData)) ;     
-navigate('/') ;
+navigate('/') ; // Throught navigate we are redirecting to home page progammatically
 }
 } catch (error) {
     setError(error.message)
@@ -46,10 +46,10 @@ navigate('/') ;
                     </Link>
         </p>
         {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
-   <form onSubmit={handleSubmit(login)} className='mt-8'>  {/* handleSubmit is the method of react hook form */}
+   <form onSubmit={handleSubmit(login)} className='mt-8'>  {/* handleSubmit is the method of react hook form , in this we are passing our own method which will be different in name and its name will never be handleSubmit  */}
 <div className='space-y-5'> 
 <Input
-Label="Email"
+label="Email"
 type="email"
 placeholder='Enter your email'
 {...register('email',{
@@ -63,7 +63,7 @@ matchPattern : (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(val
  />
 
 <Input 
-Label="Password"
+label="Password"
 type="password"
 placeholder='Enter your password'
 {...register('password',{   // This is possible React.forwardRef , which is used in Input component

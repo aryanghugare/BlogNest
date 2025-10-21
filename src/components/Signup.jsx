@@ -10,7 +10,7 @@ function Signup() {
 const[error , setError] = useState('')
 const dispatch = useDispatch()
 const {register,handleSubmit} = useForm()
-
+const navigate = useNavigate()
 const signup = async (data) =>{
 setError('')
 try {
@@ -52,7 +52,7 @@ navigate('/') ;
 <div className='space-y-5 ' >
 <Input 
 type="text"
-Label="Name"
+label="Name"
 placeholder='Enter your name'
 {...register('name',{required : true})}  // here name is the key of the object which will be sent to the backend
 /> 
@@ -60,7 +60,7 @@ placeholder='Enter your name'
 {/* // This email input field is same as in Login.jsx file */}
 
 <Input
-Label="Email"
+label="Email"
 type="email"
 placeholder='Enter your email'
 {...register('email',{   // This is possible React.forwardRef , which is used in Input component

@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 function EditPost() {
 const [post,setPost]=useState(null)
-const {slug} = useParams() ;
+const {slug} = useParams() ; // This gets the :slug param from the URL
 const navigate = useNavigate() ;
 
 useEffect(()=> {

@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 
-function PostForm({post}) {
+function PostForm({post}) { // This post prop will be undefined when we are adding a new post and it will be an object when we are editing an existing post
 const {register,handleSubmit,watch,setValue,control , getValues } = useForm(
 {
 defaultValues : {
@@ -20,6 +20,7 @@ const navigate = useNavigate()
 const userData = useSelector((state)=> state.auth.userData) ; 
 
 // data parameter in the submit function refers to the form data submitted by the user (from react-hook-form), not the data from the Redux store.
+// this data object contains the values of all the form fields that the user has filled out or modified.
 const submit = async(data)=>{
 if(post){
 // update post 
