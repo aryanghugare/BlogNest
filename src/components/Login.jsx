@@ -19,7 +19,7 @@ try {
 if(session){
 const userData = await authService.getCurrentUser()
 if(userData) dispatch(authLogin(userData)) ;     
-navigate('/') ; // Throught navigate we are redirecting to home page progammatically
+navigate('/') ; // Through navigate we are redirecting to home page progammatically
 }
 } catch (error) {
     setError(error.message)
@@ -52,7 +52,8 @@ navigate('/') ; // Throught navigate we are redirecting to home page progammatic
 label="Email"
 type="email"
 placeholder='Enter your email'
-{...register('email',{
+{...register('email',
+{ // These are the options for validation, which is optional
 required : true,
 validate : {
 matchPattern : (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || "Invalid email address"
@@ -66,7 +67,8 @@ matchPattern : (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(val
 label="Password"
 type="password"
 placeholder='Enter your password'
-{...register('password',{   // This is possible React.forwardRef , which is used in Input component
+{...register('password',  // This is possible React.forwardRef , which is used in Input component
+{  // These are the options for validation, which is optional
 required : true,
 minLength : {
 value : 6,

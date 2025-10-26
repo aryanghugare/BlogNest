@@ -8,8 +8,8 @@ import {Controller} from 'react-hook-form'
 <Controller
 name={name ||"content"} 
 control={control}
-render={({field : {onChange}})=> (
-<Editor
+render={({field : {onChange}})=> ( // onChange in the controller , here the Editor from tinymce react is rendered 
+<Editor // Editor configuration is done here
         initialValue={defaultValue}
 apiKey='4utkn39p175y20ju1x83anpvgnbq0vbm15ax02mnbey02vi8'
         init={{

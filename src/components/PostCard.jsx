@@ -1,6 +1,7 @@
 import React from 'react'
 import appwriteService from '../appwrite/config'
 import {Link} from 'react-router-dom'
+// The appwrite Service of getting file preview doesnt return any promise , it directly returns the url of the image
 
 function PostCard({$id,title,content,featuredImage }) { // $id is document id in appwrite , it is unique to appwrite
 

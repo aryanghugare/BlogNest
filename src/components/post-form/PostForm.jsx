@@ -28,7 +28,7 @@ if(post){
 // Uploading the image should be done first because we need the fileId to update the post
 const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null 
 if(file){
-appwriteService.deleteFile(post.featuredImage) 
+appwriteService.deleteFile(post.featuredImage) // as we are updating the post and we have access of post , in this post we have the featuredImage id also, so delete the old image
 }
 // slug is post.$id
 const dbPost = await appwriteService.updatePost(post.$id,{...data

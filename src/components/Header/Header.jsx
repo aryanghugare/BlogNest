@@ -60,7 +60,16 @@ className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full '
 }
 
 { authStatus ? <li><LogoutBtn /></li> : null }
+{ // Alternative way to do the same thing
+/*
+authStatus && (
+<li><LogoutBtn /></li>
 
+)
+// This says if authStatus is true , then only render this LogoutBtn component
+*/
+
+}
 </ul>
 
 </nav>
