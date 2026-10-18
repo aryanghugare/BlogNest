@@ -1,54 +1,31 @@
-import React from 'react'
-import { Editor } from  '@tinymce/tinymce-react'
-import {Controller} from 'react-hook-form'
- export default function RTE({name,control,label,defaultValue=""}) { // This control is used to pass the control to where it is call from , 
-  return (
- <div className='w-full' >
-{label && <label className='inline-block mb-1 pl-1'>{label}</label>}
-<Controller
-name={name ||"content"} 
-control={control}
-render={({field : {onChange}})=> ( // onChange in the controller , here the Editor from tinymce react is rendered 
-<Editor // Editor configuration is done here
-        initialValue={defaultValue}
-apiKey='4utkn39p175y20ju1x83anpvgnbq0vbm15ax02mnbey02vi8'
-        init={{
-            initialValue: defaultValue,
-            height: 500,
-            menubar: true,
-            plugins: [
-                "image",
-                "advlist",
-                "autolink",
-                "lists",
-                "link",
-                "image",
-                "charmap",
-                "preview",
-                "anchor",
-                "searchreplace",
-                "visualblocks",
-                "code",
-                "fullscreen",
-                "insertdatetime",
-                "media",
-                "table",
-                "code",
-                "help",
-                "wordcount",
-                "anchor",
+import { useEffect, useState } from 'react'
+import { Editor } from '@tinymce/tinymce-react'
+import { Controller } from 'react-hook-form'
 
-            ],
-            toolbar:
-            "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | help",
-            content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }"
-        }}
-        onEditorChange={onChange}
-        />
-)}
-/>
-</div>
-  )
+function editableText(html = '') {
+  const document = new DOMParser().parseFromString(html, 'text/html')
+  document.querySelectorAll('br').forEach((element) => element.replaceWith('\n'))
+  document.querySelectorAll('p, div, h1, h2, h3, h4, li, blockquote').forEach((element) => element.after('\n'))
+  return document.body.textContent.replace(/\n$/, '')
 }
 
- 
+function textToHtml(text) {
+  const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return `<p>${escaped.replace(/\n/g, '<br>')}</p>`
+}
+
+function StoryEditor({ field, defaultValue }) {
+  const [ready, setReady] = useState(false)
+  const [fallback, setFallback] = useState(false)
+  const apiKey = import.meta.env.VITE_TINYMCE_API_KEY || '4utkn39p175y20ju1x83anpvgnbq0vbm15ax02mnbey02vi8'
+  useEffect(() => {
+    if (ready) return
+    const timeout = setTimeout(() => setFallback(true), 10000)
+    return () => clearTimeout(timeout)
+  }, [ready])
+  if (fallback) return <div className="editor-fallback"><p id="basic-editor-note">Basic writing mode. You can keep writing while the full editor is unavailable. Editing here replaces rich formatting with plain text.</p><textarea id="story-content" aria-label="Your story" aria-describedby="basic-editor-note" className="input fallback-textarea" placeholder="Let’s start with a few words…" ref={field.ref} name={field.name} onBlur={field.onBlur} value={editableText(field.value)} onChange={(event) => field.onChange(textToHtml(event.target.value))} /></div>
+  return <div className="rich-editor">{!ready && <div className="editor-loading" role="status"><span className="spinner spinner-small" /> Preparing your page…</div>}<Editor id="story-content" apiKey={apiKey} initialValue={defaultValue} onInit={() => setReady(true)} onEditorChange={field.onChange} onBlur={field.onBlur} onScriptsLoadError={() => setFallback(true)} init={{ height: 500, menubar: false, branding: false, promotion: false, statusbar: true, placeholder: 'Let’s start with a few words…', plugins: ['autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'searchreplace', 'code', 'fullscreen', 'table', 'wordcount'], toolbar: 'undo redo | blocks | bold italic | bullist numlist | link blockquote | removeformat fullscreen', toolbar_mode: 'sliding', content_style: 'body { font-family: Georgia, serif; font-size: 18px; line-height: 1.85; color: #303a32; margin: 28px; } a { color: #315746; }' }} /></div>
+}
+export default function RTE({ name = 'content', control, defaultValue = '' }) {
+  return <Controller name={name} control={control} render={({ field }) => <StoryEditor field={field} defaultValue={defaultValue} />} />
+}
