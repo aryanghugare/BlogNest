@@ -1,33 +1,9 @@
-import React,{useEffect,useState} from 'react'
-import {useSelector} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
-
- export default function Protected({children,authentication=true}) {
-const navigate=useNavigate()
-const[loader,setLoader]=useState(true)
-const authStatus  = useSelector((state)=>state.auth.status) 
-// So here authentication field can be optional and we can write this useEffect only with the help of auth.status
-
-useEffect(()=>{
-// TODO : make it more easy to understand
-// First way to do it 
- // if (authStatus ===true){
-        //     navigate("/")
-        // } else if (authStatus === false) {
-        //     navigate("/login")
-        // }
-
-
-
-if(authentication && authStatus!==authentication) {
-navigate('/login')
-}else if(!authentication && authStatus!==authentication) {
-navigate('/')
-
+import { useSelector } from 'react-redux'
+import { Navigate, useLocation } from 'react-router-dom'
+export default function AuthLayout({ children, authentication = true }) {
+  const status = useSelector((state) => state.auth.status)
+  const location = useLocation()
+  if (authentication && !status) return <Navigate to="/login" replace state={{ from: location.pathname }} />
+  if (!authentication && status) return <Navigate to={location.state?.from || '/'} replace />
+  return children
 }
-setLoader(false)
-},[authStatus,navigate,authentication])
-  return loader ? <h1>Loading...</h1> : <>{children}</>
-}
-
-  

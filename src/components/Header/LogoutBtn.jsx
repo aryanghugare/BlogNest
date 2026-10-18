@@ -1,22 +1,19 @@
-import React from 'react'
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import authService from '../../appwrite/auth'
-import {logout} from '../../store/authSlice'
-function LogoutBtn() {
-const dispatch = useDispatch()
-const logoutHandler = async()=>{ 
-authService.Logout() // These appwrite functions always return promises, so we can chain a .then() to them
-.then(()=> dispatch(logout()))
-.catch((error)=> console.log("Logout Error:",error))
+import { logout } from '../../store/authSlice'
+import Icon from '../Icon'
+
+export default function LogoutBtn() {
+  const dispatch = useDispatch()
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState(false)
+  const handleLogout = async () => {
+    setBusy(true)
+    setError(false)
+    try { await authService.Logout(); dispatch(logout()) }
+    catch { setError(true) }
+    finally { setBusy(false) }
+  }
+  return <button className="logout-button" disabled={busy} onClick={handleLogout} aria-label={error ? 'Sign out failed. Try again' : 'Sign out'} title={error ? 'Could not sign out. Try again.' : 'Sign out'}><Icon name="logout" size={18} /><span>{busy ? 'Signing out…' : error ? 'Try again' : 'Sign out'}</span></button>
 }
-  return (
-<button className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full '
-onClick={logoutHandler}
-
->Logout</button>
-
-
-  )
-}
-
-export default LogoutBtn
