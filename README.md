@@ -1,6 +1,17 @@
 # BlogNest (12MegaBlog)
 
-A lightweight React + Vite blog frontend built to demonstrate authentication, post CRUD, rich-text editing, and file uploads using Appwrite.
+A React + Vite blogging app with Appwrite authentication, rich text stories, and image uploads. The interface takes its cues from independent journals: warm paper, ink and rust tones, locally hosted Newsreader and DM Sans fonts, thin rules, and responsive editorial layouts.
+
+## Interface
+
+- A journal homepage with a typographic BlogNest masthead, a locally hosted writing photograph, and writing prompts.
+- A journal index with title/content search, newest/oldest sorting, and a filter for your published stories. Search and sorting operate on the posts returned by Appwrite.
+- Responsive story cards and a dedicated reading layout with reading times and publication dates.
+- Login and signup forms with inline validation, password visibility controls, and pending states.
+- A writing space with cover previews, word counts, stable post URLs, draft/published controls, and upload validation.
+- Loading, empty, error, and missing-page states, keyboard focus styles, mobile navigation, and reduced-motion support.
+
+The existing Appwrite schema is retained. Only active posts appear in the journal; drafts remain accessible through their direct links, subject to your Appwrite document permissions. Frontend route checks do not replace Appwrite permissions.
 
 ## Features (brief)
 
@@ -74,4 +85,17 @@ A lightweight React + Vite blog frontend built to demonstrate authentication, po
 - Pass objects to children (e.g. `post={post}`) when the child component owns destructuring.
 - Centralize API logic in `src/appwrite/config.js` to simplify unit testing and mocking.
 
-If you'd like, I can add environment examples, Appwrite setup steps (console screenshots), or a checklist for production readiness (CORS, secure buckets, indexes).
+## UI configuration
+
+Design tokens and base styles live in `src/index.css`; layouts and responsive rules live in `src/App.css`. Shared SVG icons are in `src/components/Icon.jsx`.
+
+TinyMCE uses the existing project key by default. Set `VITE_TINYMCE_API_KEY` to your own key if needed. If the editor script fails to load or takes longer than 10 seconds to initialize, the writing form falls back to a plain text area. Existing HTML is preserved until the content is edited; the fallback explains that editing removes rich formatting.
+
+The writing photograph is hosted locally in `public/writers-desk.jpg` ([source image on Unsplash](https://images.unsplash.com/photo-1455390582262-044cdead277a)). Fonts and their SIL Open Font Licenses are in `public/fonts/`; the interface does not request fonts from a third-party server.
+
+## Design references
+
+- [Paperpillar / Dwinawan — E-Magazine Editorial Layout on Dribbble](https://dribbble.com/shots/26279884-E-Magazine-Editorial-Layout): editorial hierarchy and bold typography.
+- [Modern editorial website design on Pinterest](https://www.pinterest.com/pin/111956740730374617/): print-inspired rules, serif type, and varied content proportions.
+
+These references informed the layout and typographic direction. Their artwork and content are not included in the app.
