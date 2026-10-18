@@ -1,1 +1,39 @@
 @import "tailwindcss";
+
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/dm-sans-regular.ttf') format('truetype'); }
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/dm-sans-semibold.ttf') format('truetype'); }
+@font-face { font-family: 'Newsreader'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/newsreader-regular.ttf') format('truetype'); }
+@font-face { font-family: 'Newsreader'; font-style: italic; font-weight: 400; font-display: swap; src: url('/fonts/newsreader-italic.ttf') format('truetype'); }
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+  color: #292923;
+  background: #f7f5ef;
+  font-synthesis: weight;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --paper: #f7f5ef;
+  --ink: #292923;
+  --green: #292923;
+  --green-dark: #171812;
+  --accent: #ad432e;
+  --muted: #747368;
+  --line: #d1cfc3;
+  --serif: 'Newsreader', Georgia, serif;
+  --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, input, select, textarea { font: inherit; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+button, select { cursor: pointer; }
+button { border: 0; }
+a { color: inherit; text-decoration: none; }
+button, a { touch-action: manipulation; }
+button:disabled { cursor: wait; opacity: .6; }
+img { max-width: 100%; display: block; }
+figure, h1, h2, h3, p { margin: 0; }
+svg { flex-shrink: 0; }
+::selection { background: #e6c8b6; color: #292923; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+html { scroll-behavior: smooth; scroll-padding-top: 35px; }
