@@ -1,28 +1,13 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
 import appwriteService from '../appwrite/config'
-import {Link} from 'react-router-dom'
-// The appwrite Service of getting file preview doesnt return any promise , it directly returns the url of the image
+import { formatDate, plainText, readingTime } from '../utils/post'
+import Icon from './Icon'
 
-function PostCard({$id,title,content,featuredImage }) { // $id is document id in appwrite , it is unique to appwrite
-
-
-  return (
-<Link to={`/post/${$id}`}>
-<div className='w-full bg-gray-100 rounded-xl p-4 '>
-<div className='w-full flex justify-center mb-4'>
-<img
-src={appwriteService.getFilePreview(featuredImage)}
-alt={title}
-className='rounded-xl w-full h-70 object-contain'
-/>
-</div>
-<h2
-className='text-xl font-bold'
-> {title}
-</h2>
-</div>
-</Link>
-  )
+export default function PostCard({ $id, title, content, featuredImage, $createdAt }) {
+  return <article className="post-card"><Link className="post-card-link" to={`/post/${$id}`}>
+    <div className="post-card-image"><img src={appwriteService.getFilePreview(featuredImage) || '/writers-desk.jpg'} alt="" loading="lazy" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/writers-desk.jpg' }} /></div>
+    <div className="post-card-meta"><time dateTime={$createdAt}>{formatDate($createdAt)}</time><span>{readingTime(content)} min read</span></div>
+    <h3>{title}</h3><p>{plainText(content).slice(0, 160)}</p>
+    <span className="post-card-bottom">Read story <Icon name="diagonal" size={15} /></span>
+  </Link></article>
 }
-
-export default PostCard

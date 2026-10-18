@@ -1,82 +1,24 @@
-import React from 'react'
-import {Container,Logo,LogoutBtn} from '../index'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-function Header() {
+import Logo from '../Logo'
+import Icon from '../Icon'
+import LogoutBtn from './LogoutBtn'
+import Container from '../container/Container'
 
-const authStatus = useSelector((state,action)=>state.auth.status )
-const navigate = useNavigate()
-const navItems = [ {
-name : "Home",
-slug : "/"   ,   // Basically this is path
-active : true
-},
-
-{
-      name: "Login",
-      slug: "/login",
-      active: !authStatus,
-  },
-  {
-      name: "Signup",
-      slug: "/signup",
-      active: !authStatus,
-  },
-  {
-      name: "All Posts",
-      slug: "/all-posts",
-      active: authStatus,
-  },
-  {
-      name: "Add Post",
-      slug: "/add-post",
-      active: authStatus,
-  },
-
-]
-  return (
-  <header className='py-3 shadow bg-gray-500' >
-<Container>
-<nav className='flex'>
-<div className='mr-4'>
-<Link to='/' >
-<Logo width='70px' />
-</Link>
-
-</div>
-<ul className='flex ml-auto' >
-{
-navItems.map((item)=> 
-item.active ? (
-<li key={item.name} >
-<button
-onClick={()=> navigate(item.slug)}
-className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full '
->{item.name}</button>
- </li>
-) : null
-)
+export default function Header() {
+  const [open, setOpen] = useState(false)
+  const { pathname } = useLocation()
+  const { status, userData } = useSelector((state) => state.auth)
+  return <header className="site-header"><Container><div className="header-inner">
+    <Link to="/" aria-label="BlogNest home" onClick={() => setOpen(false)}><Logo /></Link>
+    <nav className="desktop-nav" aria-label="Main navigation">
+      <NavLink to="/" end>Journal</NavLink>
+      {status ? <NavLink to="/all-posts">All stories</NavLink> : <Link to="/#about">About</Link>}
+    </nav>
+    <div className="header-actions">
+      {status ? <><span className="account-name">{userData?.name?.split(' ')[0]}</span><LogoutBtn /><Link className="button button-primary button-small" to="/add-post"><Icon name="pen" size={16} /><span>Write a story</span></Link></> : <><Link className={`login-link ${pathname === '/login' ? 'current' : ''}`} to="/login">Log in</Link><Link className="button button-primary button-small" to="/signup">Write a story <Icon name="diagonal" size={16} /></Link></>}
+    </div>
+    <button className="menu-toggle icon-button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}><Icon name={open ? 'close' : 'menu'} /></button>
+  </div>{open && <nav id="mobile-nav" className="mobile-nav" aria-label="Mobile navigation" onClick={() => setOpen(false)}><Link to="/">Journal</Link><Link to={status ? '/all-posts' : '/#about'}>{status ? 'All stories' : 'About'}</Link><Link to={status ? '/add-post' : '/signup'}>Write a story</Link>{!status && <Link to="/login">Log in</Link>}{status && <LogoutBtn />}</nav>}</Container></header>
 }
-
-{ authStatus ? <li><LogoutBtn /></li> : null }
-{ // Alternative way to do the same thing
-/*
-authStatus && (
-<li><LogoutBtn /></li>
-
-)
-// This says if authStatus is true , then only render this LogoutBtn component
-*/
-
-}
-</ul>
-
-</nav>
-
-</Container>
-</header>
-  )
-}
-
-export default Header
